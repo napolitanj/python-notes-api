@@ -9,6 +9,7 @@ I built this to demonstrate core backend fundamentals: routing, schema validatio
 - GET /notes — Read all notes
 - DELETE /notes/{note_id} — Delete a note by ID
 - PUT /notes/{note_id} — Update an existing note
+- Automatic timestamps (created_at, updated_at)
 
 ## How to Run Locally
 
