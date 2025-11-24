@@ -35,3 +35,14 @@ def remove_note(note_id: int, db: Session = Depends(get_db)):
      db.delete(note)
      db.commit()
     return note
+
+@app.put("/notes/{note_id}", response_model=NoteSchema)
+def edit_note(note_id: int, new_note: NoteCreate, db: Session = Depends(get_db)):
+    note= db.query(NoteModel).where(NoteModel.id == note_id).first()
+    if note == None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    else:
+        note.text = new_note.text
+        db.commit()
+        db.refresh(note)
+    return note
