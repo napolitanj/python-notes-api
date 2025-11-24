@@ -12,6 +12,8 @@ I built this to demonstrate core backend fundamentals: routing, schema validatio
 - Automatic timestamps (created_at, updated_at)
 - Sorting by date created or date updated
 - Searching by text or category
+- Retrieval by ID
+- Pagination
 
 ## How to Run Locally
 
