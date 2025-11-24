@@ -11,6 +11,7 @@ I built this to demonstrate core backend fundamentals: routing, schema validatio
 - PUT /notes/{note_id} — Update an existing note
 - Automatic timestamps (created_at, updated_at)
 - Sorting by date created or date updated
+- Searching by text or category
 
 ## How to Run Locally
 
