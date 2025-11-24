@@ -10,6 +10,7 @@ I built this to demonstrate core backend fundamentals: routing, schema validatio
 - DELETE /notes/{note_id} — Delete a note by ID
 - PUT /notes/{note_id} — Update an existing note
 - Automatic timestamps (created_at, updated_at)
+- Sorting by date created or date updated
 
 ## How to Run Locally
 
