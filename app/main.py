@@ -23,9 +23,11 @@ def add_note(note: NoteCreate,  db: Session = Depends(get_db)):
     return db_update
 
 @app.get("/notes", response_model=list[NoteSchema])
-def view_notes(page: int = 1, limit: int = 20, sort: str | None = None, db: Session = Depends(get_db)):
+def view_notes(page: int = 1, limit: int = 20, sort: str | None = None, search: str | None = None, db: Session = Depends(get_db)):
     skip = (page - 1) * limit
     notes = db.query(NoteModel)
+    if search is not None:
+        notes = notes.filter(NoteModel.text.contains(search) | NoteModel.category.contains(search))
     if sort == "created_at":
         notes = notes.order_by(NoteModel.created_at)
     elif sort == "updated_at":
