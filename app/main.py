@@ -23,12 +23,14 @@ def add_note(note: NoteCreate,  db: Session = Depends(get_db)):
     return db_update
 
 @app.get("/notes", response_model=list[NoteSchema])
-def view_notes(sort: str | None = None, db: Session = Depends(get_db)):
+def view_notes(page: int = 1, limit: int = 20, sort: str | None = None, db: Session = Depends(get_db)):
+    skip = (page - 1) * limit
     notes = db.query(NoteModel)
     if sort == "created_at":
         notes = notes.order_by(NoteModel.created_at)
     elif sort == "updated_at":
         notes = notes.order_by(NoteModel.updated_at)
+    notes = notes.offset(skip).limit(limit)
     return notes.all()
 
 @app.delete("/notes/{note_id}", response_model=NoteSchema)
