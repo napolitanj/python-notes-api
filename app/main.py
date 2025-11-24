@@ -23,8 +23,13 @@ def add_note(note: NoteCreate,  db: Session = Depends(get_db)):
     return db_update
 
 @app.get("/notes", response_model=list[NoteSchema])
-def view_notes(db: Session = Depends(get_db)):
-    return db.query(NoteModel).all()
+def view_notes(sort: str | None = None, db: Session = Depends(get_db)):
+    notes = db.query(NoteModel)
+    if sort == "created_at":
+        notes = notes.order_by(NoteModel.created_at)
+    elif sort == "updated_at":
+        notes = notes.order_by(NoteModel.updated_at)
+    return notes.all()
 
 @app.delete("/notes/{note_id}", response_model=NoteSchema)
 def remove_note(note_id: int, db: Session = Depends(get_db)):
