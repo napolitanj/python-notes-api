@@ -35,4 +35,8 @@ python
 
 # Start the server
 uvicorn app.main:app --reload
+
+# Run with Docker
+docker build -t python-notes-api .
+docker run -p 8000:8000 python-notes-api
 ```
