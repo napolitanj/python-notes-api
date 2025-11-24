@@ -8,6 +8,7 @@ I built this to demonstrate core backend fundamentals: routing, schema validatio
 - POST /notes — Create a note
 - GET /notes — Read all notes
 - DELETE /notes/{note_id} — Delete a note by ID
+- PUT /notes/{note_id} — Update an existing note
 
 ## How to Run Locally
 
