@@ -35,6 +35,13 @@ def view_notes(page: int = 1, limit: int = 20, sort: str | None = None, search: 
     notes = notes.offset(skip).limit(limit)
     return notes.all()
 
+@app.get("/notes/{note_id}", response_model=NoteSchema)
+def view_notes_by_id(note_id: int, db: Session = Depends(get_db)):
+    note = db.query(NoteModel).where(NoteModel.id == note_id).first()
+    if note == None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return note
+
 @app.delete("/notes/{note_id}", response_model=NoteSchema)
 def remove_note(note_id: int, db: Session = Depends(get_db)):
     note = db.query(NoteModel).where(NoteModel.id == note_id).first()
@@ -52,6 +59,7 @@ def edit_note(note_id: int, new_note: NoteCreate, db: Session = Depends(get_db))
         raise HTTPException(status_code=404, detail="Item not found")
     else:
         note.text = new_note.text
+        note.category = new_note.category
         db.commit()
         db.refresh(note)
     return note
