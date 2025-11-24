@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from .database import SessionLocal
-from .schemas import NoteCreate, Note as NoteSchema
+from .schemas import NoteCreate, NotePatch, Note as NoteSchema
 from sqlalchemy.orm import Session
 from .models import Note as NoteModel
 
@@ -15,8 +15,8 @@ def get_db():
 
 #Routes
 @app.post("/notes", response_model=NoteSchema)
-def add_note(note: NoteCreate, db: Session = Depends(get_db)):
-    db_update = NoteModel(text = note.text)
+def add_note(note: NoteCreate,  db: Session = Depends(get_db)):
+    db_update = NoteModel(text = note.text, category = note.category)
     db.add(db_update)
     db.commit()
     db.refresh(db_update)
@@ -45,4 +45,17 @@ def edit_note(note_id: int, new_note: NoteCreate, db: Session = Depends(get_db))
         note.text = new_note.text
         db.commit()
         db.refresh(note)
+    return note
+
+@app.patch("/notes/{note_id}", response_model=NoteSchema)
+def patch_note(note_id: int, patch: NotePatch, db: Session = Depends(get_db)):
+    note = db.query(NoteModel).where(NoteModel.id == note_id).first()
+    if note == None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    if patch.text is not None:
+        note.text = patch.text
+    if patch.category is not None:
+        note.category = patch.category
+    db.commit()
+    db.refresh(note)
     return note
